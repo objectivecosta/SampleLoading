@@ -28,32 +28,26 @@ class APresenter: PresenterProtocol {
     }
     
     func viewDidLoad() {
-        async {
-            await fetch()
-        }
+        fetch()
     }
     
     func fetchMore() {
-        async {
-            await fetch(page: currentPage + 1)
-        }
+        fetch(page: currentPage + 1)
     }
     
-    @MainActor private func fetch(page: Int = 1) async {
+    private func fetch(page: Int = 1) {
         print("-fetch async/await thread:", Thread.current)
 
-        print("-fetch async/await thread inside async:", Thread.current)
-        
-        do {
+        async {
+            print("-fetch async/await thread inside async:", Thread.current)
+            
             let characters = try await service.fetchCharacters(page: page)
             
             print("-fetch async/await thread inside async post await:", Thread.current)
             
             self.items.append(contentsOf: characters)
             
-            self.view?.didReceiveItems(showCharacters: characters)
-        } catch {
-            print("-fetch async/await error:", error)
+            await self.view?.didReceiveItems(showCharacters: characters)
         }
         
         print("-fetch async/await ending:", Thread.current)
