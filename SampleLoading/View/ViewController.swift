@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ViewProtocol: AnyObject {
-    #warning("Essa função de retorno do presenter para a view controller precisa ser chamada no main thread!")
+    #warning("This return function from the presenter to the view controller needs to be called on the main thread!")
     /*@MainActor*/ func didReceiveItems(showCharacters: [ShowCharacter])
 }
 
